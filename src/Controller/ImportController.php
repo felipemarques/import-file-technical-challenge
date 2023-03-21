@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\ImportRepository;
+use App\Service\ImportService;
 
 use App\Entity\Objects;
 use App\Entity\Fields;
@@ -30,7 +30,8 @@ class ImportController extends AbstractController
     public function index(): Response
     {
         try {
-            $import = new ImportRepository($this->doctrine);
+
+            $import = new ImportService($this->doctrine);
             $import->process();
     
             $data = [
@@ -48,23 +49,23 @@ class ImportController extends AbstractController
         return $this->json($data);
     }
 
-    // /**
-    //  * @Route("/objects", name="app_import", methods={"GET"})
-    //  */
-    // public function getAllObjects()
-    // {
-    //     $data = $this->doctrine->getRepository(Objects::class)->findAll();
+    /**
+     * @Route("/objects", name="app_objects", methods={"GET"})
+     */
+    public function getAllObjects()
+    {
+        $data = $this->doctrine->getRepository(Objects::class)->findAll();
 
-    //     return $this->json($data);
-    // }
+        return $this->json($data);
+    }
 
-    // /**
-    //  * @Route("/fields", name="app_import", methods={"GET"})
-    //  */
-    // public function getAllFields()
-    // {
-    //     $data = $this->doctrine->getRepository(Fields::class)->findAll();
+    /**
+     * @Route("/fields", name="app_fields", methods={"GET"})
+     */
+    public function getAllFields()
+    {
+        $data = $this->doctrine->getRepository(Fields::class)->findAll();
 
-    //     return $this->json($data); 
-    // }
+        return $this->json($data); 
+    }
 }

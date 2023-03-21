@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Service;
 
 use App\Repository\ObjectsRepository;
 use App\Repository\SectorsRepository;
@@ -12,7 +12,7 @@ use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
-class ImportRepository
+class ImportService
 {
     protected ManagerRegistry $doctrine;
 
@@ -97,13 +97,23 @@ class ImportRepository
                 $object->setCreatedAt(new \DateTimeImmutable('now'));
                 $object->setUpdatedAt(new \DateTimeImmutable('now'));
 
+
+
                 $entityManager->persist($object);
                 $entityManager->flush();
+
+                print_r($object);
+                exit;
 
                 $objectProps = new ObjectProps();
                 $objectProps->setObjectId($object->getId());
                 $objectProps->setFieldId($fieldManufacturer->getId());
                 $objectProps->setValue($manufacturer);
+
+                $objectProps = new ObjectProps();
+                $objectProps->setObjectId($object->getId());
+                $objectProps->setFieldId($fieldModel->getId());
+                $objectProps->setValue($model);
 
                 $entityManager->persist($objectProps);
                 $entityManager->flush();
